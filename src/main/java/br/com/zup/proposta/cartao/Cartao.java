@@ -1,10 +1,12 @@
 package br.com.zup.proposta.cartao;
 
+import br.com.zup.proposta.biometria.Biometria;
 import br.com.zup.proposta.proposta.Proposta;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Cartao {
@@ -19,6 +21,8 @@ public class Cartao {
     @OneToOne
     @MapsId
     private Proposta proposta;
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL)
+    private List<Biometria> biometrias;
 
     @Deprecated
     public Cartao(){
@@ -30,5 +34,13 @@ public class Cartao {
         this.titular = titular;
         this.limite = limite;
         this.proposta = proposta;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void vincularBiometria(Biometria biometria) {
+        this.biometrias.add(biometria);
     }
 }

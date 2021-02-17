@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 public class ApiErroException extends RuntimeException {
 
     private final HttpStatus httpStatus;
-
     private final String mensagem;
 
     public ApiErroException(HttpStatus httpStatus, String mensagem) {

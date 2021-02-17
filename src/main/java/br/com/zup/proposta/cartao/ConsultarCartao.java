@@ -5,7 +5,6 @@ import br.com.zup.proposta.proposta.PropostaRepository;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,11 +15,13 @@ import java.util.List;
 @Service
 public class ConsultarCartao {
 
-    @Autowired
     private CartaoClient cartaoClient;
-
-    @Autowired
     private PropostaRepository propostaRepository;
+
+    public ConsultarCartao(CartaoClient cartaoClient, PropostaRepository propostaRepository) {
+        this.cartaoClient = cartaoClient;
+        this.propostaRepository = propostaRepository;
+    }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

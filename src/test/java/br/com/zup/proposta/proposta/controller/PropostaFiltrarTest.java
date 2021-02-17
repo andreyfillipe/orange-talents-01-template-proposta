@@ -26,7 +26,6 @@ public class PropostaFiltrarTest {
 
     @Autowired
     MockMvc mvc;
-
     @Autowired
     PropostaRepository propostaRepository;
 

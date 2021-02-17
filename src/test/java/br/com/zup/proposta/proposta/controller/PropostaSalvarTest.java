@@ -33,18 +33,18 @@ public class PropostaSalvarTest {
 
     @Autowired
     MockMvc mvc;
-
     @Autowired
     ObjectMapper mapper;
-
     @Autowired
     PropostaRepository propostaRepository;
 
     @Test
     @DisplayName("Salvar uma proposta com sucesso Elegível")
     public void salvarElegivel() throws Exception {
-        PropostaRequest proposta = novaPropostaRequest("");
-        String json = mapper.writeValueAsString(proposta);
+        EnderecoRequest enderecoRequest = new EnderecoRequest("Logradouro", "100", "Bairro", "Complemento", "Cidade", "SP", "35000-000");
+        PropostaRequest propostaRequest = new PropostaRequest("123.456.789-09", "email@email.com", "Nome", enderecoRequest, new BigDecimal(1500.00));
+
+        String json = mapper.writeValueAsString(propostaRequest);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .post("/propostas")
@@ -54,15 +54,17 @@ public class PropostaSalvarTest {
         mvc.perform(request).andExpect(MockMvcResultMatchers.status().isCreated());
         List<Proposta> propostaSalvar = propostaRepository.findAll();
         assertThat(propostaSalvar.size()).isOne();
-        assertThat(propostaSalvar.get(0).getDocumento()).isEqualTo(proposta.getDocumento());
+        assertThat(propostaSalvar.get(0).getDocumento()).isEqualTo(propostaRequest.getDocumento());
         assertThat(propostaSalvar.get(0).getStatus()).isEqualTo(PropostaStatus.ELEGIVEL);
     }
 
     @Test
     @DisplayName("Salvar uma proposta com sucesso Não elegível")
     public void salvarNaoElegivel() throws Exception {
-        PropostaRequest proposta = novaPropostaRequest("342.042.440-09");
-        String json = mapper.writeValueAsString(proposta);
+        EnderecoRequest enderecoRequest = new EnderecoRequest("Logradouro", "100", "Bairro", "Complemento", "Cidade", "SP", "35000-000");
+        PropostaRequest propostaRequest = new PropostaRequest("342.042.440-09", "email@email.com", "Nome", enderecoRequest, new BigDecimal(1500.00));
+
+        String json = mapper.writeValueAsString(propostaRequest);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .post("/propostas")
@@ -72,18 +74,22 @@ public class PropostaSalvarTest {
         mvc.perform(request).andExpect(MockMvcResultMatchers.status().isCreated());
         List<Proposta> propostaSalvar = propostaRepository.findAll();
         assertThat(propostaSalvar.size()).isOne();
-        assertThat(propostaSalvar.get(0).getDocumento()).isEqualTo(proposta.getDocumento());
+        assertThat(propostaSalvar.get(0).getDocumento()).isEqualTo(propostaRequest.getDocumento());
         assertThat(propostaSalvar.get(0).getStatus()).isEqualTo(PropostaStatus.NAO_ELEGIVEL);
     }
 
     @Test
     @DisplayName("Validar uma proposta com documento duplicado")
-    public void validardocumentoDuplicado() throws Exception {
-        Proposta novaProposta = novaProposta();
-        propostaRepository.save(novaProposta);
+    public void validarDocumentoDuplicado() throws Exception {
+        Endereco endereco = new Endereco("Logradouro", "100", "Bairro", "Complemento", "Cidade", "SP", "35000-000");
+        Proposta proposta = new Proposta("123.456.789-09", "email@email.com", "Nome", endereco, new BigDecimal(1500.00));
 
-        PropostaRequest proposta = novaPropostaRequest("");
-        String json = mapper.writeValueAsString(proposta);
+        propostaRepository.save(proposta);
+
+        EnderecoRequest enderecoRequest = new EnderecoRequest("Logradouro", "100", "Bairro", "Complemento", "Cidade", "SP", "35000-000");
+        PropostaRequest propostaRequest = new PropostaRequest("123.456.789-09", "email@email.com", "Nome", enderecoRequest, new BigDecimal(1500.00));
+
+        String json = mapper.writeValueAsString(propostaRequest);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .post("/propostas")
@@ -93,14 +99,15 @@ public class PropostaSalvarTest {
         mvc.perform(request).andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
         List<Proposta> propostaSalvar = propostaRepository.findAll();
         assertThat(propostaSalvar.size()).isOne();
-        assertThat(propostaSalvar.get(0).getDocumento()).isEqualTo(novaProposta.getDocumento());
+        assertThat(propostaSalvar.get(0).getDocumento()).isEqualTo(proposta.getDocumento());
     }
 
     @Test
     @DisplayName("Validar dados inválidos")
     public void naoSalvarPropostaComDadosInvalidos() throws Exception {
-        PropostaRequest proposta = novaPropostaRequestInvalida();
-        String json = mapper.writeValueAsString(proposta);
+        EnderecoRequest enderecoRequest = new EnderecoRequest("", "", "", "", "", "", "");
+        PropostaRequest propostaRequest = new PropostaRequest("", "", "", enderecoRequest, null);
+        String json = mapper.writeValueAsString(propostaRequest);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .post("/propostas")
@@ -110,21 +117,5 @@ public class PropostaSalvarTest {
         mvc.perform(request).andExpect(MockMvcResultMatchers.status().isBadRequest());
         List<Proposta> propostaSalvar = propostaRepository.findAll();
         assertThat(propostaSalvar.isEmpty()).isTrue();
-    }
-
-    private PropostaRequest novaPropostaRequest(String documento) {
-        String novoDocumento = documento == "" ? "123.456.789-09" : documento;
-        EnderecoRequest endereco = new EnderecoRequest("Logradouro", "100", "Bairro", "Complemento", "Cidade", "SP", "35000-000");
-        return new PropostaRequest(novoDocumento, "email@email.com", "Nome", endereco, new BigDecimal(1500.00));
-    }
-
-    private PropostaRequest novaPropostaRequestInvalida() {
-        EnderecoRequest endereco = new EnderecoRequest("", "", "", "", "", "", "");
-        return new PropostaRequest("", "", "", endereco, null);
-    }
-
-    private Proposta novaProposta() {
-        Endereco endereco = new Endereco("Logradouro", "100", "Bairro", "Complemento", "Cidade", "SP", "35000-000");
-        return new Proposta("123.456.789-09", "email@email.com", "Nome", endereco, new BigDecimal(1500.00));
     }
 }

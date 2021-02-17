@@ -4,9 +4,7 @@ import br.com.zup.proposta.config.validacao.ApiErroException;
 import br.com.zup.proposta.proposta.analisarproposta.AnalisarPropostaClient;
 import br.com.zup.proposta.proposta.analisarproposta.AnalisarPropostaResponse;
 import br.com.zup.proposta.proposta.analisarproposta.AnalisarPropostaStatus;
-import br.com.zup.proposta.cartao.CartaoClient;
 import feign.FeignException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +21,13 @@ import java.util.Map;
 @RequestMapping("/propostas")
 public class PropostaController {
 
-    @Autowired
     private PropostaRepository propostaRepository;
-
-    @Autowired
     private AnalisarPropostaClient analisarPropostaClient;
 
-    @Autowired
-    private CartaoClient cartaoClient;
+    public PropostaController(PropostaRepository propostaRepository, AnalisarPropostaClient analisarPropostaClient) {
+        this.propostaRepository = propostaRepository;
+        this.analisarPropostaClient = analisarPropostaClient;
+    }
 
     @PostMapping
     @Transactional

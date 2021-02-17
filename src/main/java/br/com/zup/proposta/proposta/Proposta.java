@@ -1,7 +1,6 @@
 package br.com.zup.proposta.proposta;
 
 import br.com.zup.proposta.cartao.Cartao;
-import br.com.zup.proposta.config.validacao.ApiErroException;
 import br.com.zup.proposta.config.validacao.beanValidation.CpfCnpj;
 import br.com.zup.proposta.endereco.Endereco;
 import br.com.zup.proposta.proposta.analisarproposta.AnalisarPropostaRequest;
@@ -70,6 +69,10 @@ public class Proposta {
 
     public PropostaStatus getStatus() {
         return status;
+    }
+
+    public Cartao getCartao() {
+        return cartao;
     }
 
     public void atualizarNumeroCartao(Cartao cartao) {
