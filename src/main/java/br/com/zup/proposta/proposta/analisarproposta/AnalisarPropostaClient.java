@@ -4,9 +4,11 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "analisarProposta", url = "${analise.proposta.url}")
+import javax.validation.Valid;
+
+@FeignClient(name = "analisarProposta", url = "${url.proposta.analise}")
 public interface AnalisarPropostaClient {
 
     @PostMapping
-    AnalisarPropostaResponse analisar(@RequestBody AnalisarPropostaRequest request);
+    AnalisarPropostaResponse analisar(@RequestBody @Valid AnalisarPropostaRequest request);
 }

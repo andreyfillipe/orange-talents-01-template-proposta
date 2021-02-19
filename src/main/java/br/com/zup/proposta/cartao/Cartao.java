@@ -3,9 +3,9 @@ package br.com.zup.proposta.cartao;
 import br.com.zup.proposta.biometria.Biometria;
 import br.com.zup.proposta.bloqueio.Bloqueio;
 import br.com.zup.proposta.proposta.Proposta;
+import br.com.zup.proposta.viagem.Viagem;
 
 import javax.persistence.*;
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +29,8 @@ public class Cartao {
     private List<Biometria> biometrias;
     @OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL)
     private List<Bloqueio> bloqueios;
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL)
+    private List<Viagem> viagens;
 
     @Deprecated
     public Cartao(){
@@ -62,14 +64,7 @@ public class Cartao {
         this.bloqueios.add(bloqueio);
     }
 
-    public Bloqueio toBloqueio(HttpServletRequest request) {
-        String xRealIp = request.getHeader("X-REAL-IP");
-        String xForwardedFor = request.getHeader("X-FORWARDED-FOR");
-        String remoteAddr = request.getRemoteAddr();
-        String ip = (xRealIp != null) ? xRealIp : ((xForwardedFor != null) ? xForwardedFor : remoteAddr);
-
-        String userAgent = request.getHeader("USER-AGENT");
-
-        return new Bloqueio(ip, userAgent, this);
+    public void vincularViagem(Viagem viagem) {
+        this.viagens.add(viagem);
     }
 }

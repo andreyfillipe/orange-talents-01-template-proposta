@@ -1,12 +1,13 @@
 package br.com.zup.proposta.bloqueio;
 
-import br.com.zup.proposta.bloqueio.bloquear.BloquearCartaoClient;
+import br.com.zup.proposta.bloqueio.bloquear.BloquearClient;
 import br.com.zup.proposta.bloqueio.bloquear.BloquearRequest;
 import br.com.zup.proposta.bloqueio.bloquear.BloquearResponse;
 import br.com.zup.proposta.cartao.Cartao;
 import br.com.zup.proposta.cartao.CartaoRepository;
 import br.com.zup.proposta.cartao.CartaoStatus;
 import br.com.zup.proposta.config.validacao.ApiErroException;
+import br.com.zup.proposta.util.Util;
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 public class BloqueioController {
 
     private CartaoRepository cartaoRepository;
-    private BloquearCartaoClient bloquearClient;
+    private BloquearClient bloquearClient;
 
-    public BloqueioController(CartaoRepository cartaoRepository, BloquearCartaoClient bloquearClient) {
+    public BloqueioController(CartaoRepository cartaoRepository, BloquearClient bloquearClient) {
         this.cartaoRepository = cartaoRepository;
         this.bloquearClient = bloquearClient;
     }
@@ -32,7 +33,7 @@ public class BloqueioController {
     public ResponseEntity<Void> salvar(@PathVariable Long id,
                                        HttpServletRequest httpServletRequest) {
         Cartao cartao = cartaoRepository.findById(id).orElseThrow(() -> new ApiErroException(HttpStatus.NOT_FOUND, "Cartão não encontrado"));
-        Bloqueio bloqueio = cartao.toBloqueio(httpServletRequest);
+        Bloqueio bloqueio = new Bloqueio(Util.getIp(httpServletRequest), Util.getUserAgent(httpServletRequest), cartao);
         cartao.vincularBloqueio(bloqueio);
         cartaoRepository.save(cartao);
 
