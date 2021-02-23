@@ -15,7 +15,7 @@ public class Bloqueio {
     private Long id;
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime dataBloqueio = LocalDateTime.now();
+    private LocalDateTime dataBloqueio;
     @NotBlank
     @Column(nullable = false)
     private String ip;
@@ -34,5 +34,6 @@ public class Bloqueio {
         this.ip = ip;
         this.userAgent = userAgent;
         this.cartao = cartao;
+        this.dataBloqueio = LocalDateTime.now();
     }
 }

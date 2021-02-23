@@ -1,6 +1,6 @@
 package br.com.zup.proposta.proposta;
 
-import br.com.zup.proposta.config.validacao.beanValidation.CpfCnpj;
+import br.com.zup.proposta.config.validacao.beanValidation.CpfOuCnpj;
 import br.com.zup.proposta.endereco.EnderecoRequest;
 
 import javax.validation.constraints.Email;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class PropostaRequest {
 
     @NotBlank
-    @CpfCnpj
+    @CpfOuCnpj
     private String documento;
     @NotBlank
     @Email

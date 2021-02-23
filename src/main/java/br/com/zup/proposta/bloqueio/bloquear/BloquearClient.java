@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
+
 @FeignClient(name = "bloquearCartao", url = "${url.proposta.cartao}")
 public interface BloquearClient {
 
     @PostMapping(value = "{id}/bloqueios")
-    BloquearResponse bloquear(@PathVariable("id") String id, @RequestBody BloquearRequest request);
+    BloquearResponse bloquear(@PathVariable("id") String id, @RequestBody @Valid BloquearRequest request);
 }

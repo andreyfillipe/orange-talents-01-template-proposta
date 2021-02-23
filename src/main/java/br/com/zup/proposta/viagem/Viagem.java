@@ -21,10 +21,10 @@ public class Viagem {
     @NotNull
     @Future
     @Column(nullable = false)
-    private LocalDate dataTermino = LocalDate.now();
+    private LocalDate dataTermino;
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime dataAvisoViagem = LocalDateTime.now();
+    private LocalDateTime dataAvisoViagem;
     @NotBlank
     @Column(nullable = false)
     private String ip;
@@ -45,6 +45,8 @@ public class Viagem {
         this.ip = ip;
         this.userAgent = userAgent;
         this.cartao = cartao;
+        this.dataTermino = LocalDate.now();
+        this.dataAvisoViagem = LocalDateTime.now();
     }
 
     public String getDestino() {

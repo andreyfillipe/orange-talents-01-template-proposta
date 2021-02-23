@@ -18,7 +18,7 @@ public class Biometria {
     private String fingerprint;
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime dataCriacao = LocalDateTime.now();
+    private LocalDateTime dataCriacao;
     @NotNull
     @ManyToOne
     @JoinColumn(name = "cartao_id")
@@ -31,6 +31,7 @@ public class Biometria {
     public Biometria(@NotBlank String fingerprint, @NotNull Cartao cartao) {
         this.fingerprint = fingerprint;
         this.cartao = cartao;
+        this.dataCriacao = LocalDateTime.now();
     }
 
     public Long getId() {

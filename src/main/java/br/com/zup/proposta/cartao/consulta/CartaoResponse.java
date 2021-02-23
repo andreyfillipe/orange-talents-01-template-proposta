@@ -1,5 +1,6 @@
-package br.com.zup.proposta.cartao;
+package br.com.zup.proposta.cartao.consulta;
 
+import br.com.zup.proposta.cartao.Cartao;
 import br.com.zup.proposta.proposta.Proposta;
 
 import java.math.BigDecimal;

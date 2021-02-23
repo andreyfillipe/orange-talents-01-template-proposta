@@ -2,6 +2,7 @@ package br.com.zup.proposta.cartao;
 
 import br.com.zup.proposta.biometria.Biometria;
 import br.com.zup.proposta.bloqueio.Bloqueio;
+import br.com.zup.proposta.carteira.Carteira;
 import br.com.zup.proposta.proposta.Proposta;
 import br.com.zup.proposta.viagem.Viagem;
 
@@ -21,7 +22,7 @@ public class Cartao {
     private String titular;
     private BigDecimal limite;
     @Enumerated(EnumType.STRING)
-    private CartaoStatus status = CartaoStatus.DESBLOQUEADO;
+    private CartaoStatus status;
     @OneToOne
     @MapsId
     private Proposta proposta;
@@ -31,6 +32,8 @@ public class Cartao {
     private List<Bloqueio> bloqueios;
     @OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL)
     private List<Viagem> viagens;
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL)
+    private List<Carteira> carteiras;
 
     @Deprecated
     public Cartao(){
@@ -42,6 +45,7 @@ public class Cartao {
         this.titular = titular;
         this.limite = limite;
         this.proposta = proposta;
+        this.status = CartaoStatus.DESBLOQUEADO;
     }
 
     public Long getId() {
@@ -66,5 +70,9 @@ public class Cartao {
 
     public void vincularViagem(Viagem viagem) {
         this.viagens.add(viagem);
+    }
+
+    public void vincularCarteira(Carteira carteira) {
+        this.carteiras.add(carteira);
     }
 }

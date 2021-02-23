@@ -4,7 +4,7 @@ services:
   proposta:
     image: 'andrey/proposta'
     ports:
-      - 8080:8080
+      - 8081:8080
     depends_on:
       - "postgres"
     environment:
@@ -12,8 +12,8 @@ services:
 
   postgres:
     image: 'postgres:alpine'
-    volumes:
-      - postgres-volume-app:/var/lib/postgresql/data
+    #volumes:
+    #  - postgres-volume-app:/var/lib/postgresql/data
     ports:
       - 5433:5432
     environment:
@@ -24,8 +24,8 @@ services:
 
   mysql:
     image: 'mysql'
-    volumes:
-      - mysql-volume-app:/var/lib/mysql/data
+    #volumes:
+    #  - mysql-volume-app:/var/lib/mysql/data
     ports:
       - 3307:3306
     environment:
@@ -35,5 +35,5 @@ services:
       POSTGRES_HOST: mysql
 
 volumes:
-  postgres-volume-app:
-  mysql-volume-app:
+  #postgres-volume-app:
+  #mysql-volume-app:

@@ -7,6 +7,7 @@ import br.com.zup.proposta.proposta.analisarproposta.AnalisarPropostaStatus;
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,6 +24,7 @@ public class PropostaController {
 
     private PropostaRepository propostaRepository;
     private AnalisarPropostaClient analisarPropostaClient;
+    private Encryptors encryptors;
 
     public PropostaController(PropostaRepository propostaRepository, AnalisarPropostaClient analisarPropostaClient) {
         this.propostaRepository = propostaRepository;

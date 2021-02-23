@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 @CPF
 @CNPJ
 @ConstraintComposition(CompositionType.OR)
-public @interface CpfCnpj {
+public @interface CpfOuCnpj {
 
     String message() default "CPF/CNPJ inválido";
 
